@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import org.md2k.datakitapi.time.DateTime;
 import org.md2k.utilities.Report.Log;
 
 /**
@@ -154,6 +155,11 @@ public class ActivityExercise extends Activity {
                 if (!questions[mPager.getCurrentItem()].isValid()) {
                     Toast.makeText(getBaseContext(), "Please answer the question first", Toast.LENGTH_SHORT).show();
                 } else if (mPager.getCurrentItem() >= questions.length - 1) {
+                    if(Questions.getInstance().getQuestion(1).getQuestion_responses_selected().size()!=0) {
+                        String thoughts = Questions.getInstance().getQuestion(1).getQuestion_responses_selected().get(0);
+                        String rephrase = Questions.getInstance().getQuestion(12).getQuestion_responses_selected().get(0);
+                        HistoryData.getInstance().add(DateTime.getDateTime(), thoughts, rephrase, false);
+                    }
                     Questions.getInstance().destroy();
                     //TODO: send data to datakit
                     finish();

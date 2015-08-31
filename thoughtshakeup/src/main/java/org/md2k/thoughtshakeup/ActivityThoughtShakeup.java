@@ -57,10 +57,8 @@ public class ActivityThoughtShakeup extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(ActivityMoodSurfingExercises.this, ActivityMoodSurfingExercise.class);
-//                intent.putExtra("type", Constants.NOTICE_AND_ACCEPT);
-//                Questions.getInstance().clear(Constants.NOTICE_AND_ACCEPT);
-//                startActivity(intent);
+                Intent intent = new Intent(ActivityThoughtShakeup.this, ActivityDiary.class);
+                startActivity(intent);
             }
         });
         getActionBar().setDisplayHomeAsUpEnabled(true);

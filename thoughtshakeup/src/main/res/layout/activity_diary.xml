@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ActivityDiary">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border_header"
+                    android:gravity="center"
+                    android:text="Original Thought"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border_header"
+                    android:gravity="center"
+                    android:paddingTop="18dip"
+                    android:paddingBottom="18dip"
+
+                    android:text="Shake it up!"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_span="2"
+                    android:background="@drawable/table_border"
+                    android:gravity="center"
+                    android:paddingTop="18dip"
+                    android:paddingBottom="18dip"
+                    android:text="Favorites"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="@color/lightgreen_900"
+                    android:textStyle="bold" />
+            </TableRow>
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/tablelayout_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:shrinkColumns="*"
+                android:stretchColumns="*"></TableLayout>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_span="2"
+                    android:background="@drawable/table_border"
+                    android:gravity="center"
+                    android:paddingTop="18dip"
+                    android:paddingBottom="18dip"
+                    android:text="History"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="@color/lightgreen_900"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/tablelayout_history"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:shrinkColumns="*"
+                android:stretchColumns="*"></TableLayout>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>
