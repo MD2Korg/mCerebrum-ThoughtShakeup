@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.PopupMenu;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -40,25 +41,50 @@ import java.util.ArrayList;
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-public class ActivityThoughtShow extends Activity {
-    private static final String TAG = ActivityThoughtShow.class.getSimpleName();
+public class ActivityHistory extends Activity {
+    private static final String TAG = ActivityHistory.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thought_show);
+        setContentView(R.layout.activity_history);
         setTitle("History");
-        long timestamp=getIntent().getLongExtra("timestamp",-1);
-        setThoughts(timestamp);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    void setThoughts(long timestamp){
-        ArrayList<HistoryData.DataPoint> dataPoint= HistoryData.getInstance().get(timestamp);
-        ((TextView)findViewById(R.id.textViewThought)).setText(dataPoint.get(0).thought);
-        ((TextView)findViewById(R.id.textViewRephrase)).setText(dataPoint.get(0).rephrase);
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadHistory();
     }
+    TextView createTextView(String text, final long timestamp){
+        TextView textView=new TextView(this);
+        textView.setText(text);
+        textView.setGravity(Gravity.CENTER);
+        textView.setBackgroundResource(R.drawable.table_border);
+        textView.setTextAppearance(this, android.R.style.TextAppearance_DeviceDefault_Medium);
+        textView.setTag(timestamp);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActivityHistory.this, ActivityThoughtShow.class);
+                intent.putExtra("timestamp", timestamp);
+                startActivity(intent);
+            }
+        });
 
+        textView.setPadding(32, 32, 32, 32);
+        return textView;
+    }
+    void loadHistory(){
+        TableLayout tableLayout=(TableLayout)findViewById(R.id.tablelayout_history);
+        tableLayout.removeAllViews();
+        ArrayList<HistoryData.DataPoint> datapoints=HistoryData.getInstance().get(false);
+        for(int i=0;i<datapoints.size();i++){
+            TableRow tableRow=new TableRow(this);
+            tableRow.addView(createTextView(datapoints.get(i).thought,datapoints.get(i).timestamp));
+            tableLayout.addView(tableRow);
+        }
+    }
 
     PopupMenu popup = null;
 
@@ -86,7 +112,7 @@ public class ActivityThoughtShow extends Activity {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.action_home:
-                                    NavUtils.navigateUpTo(ActivityThoughtShow.this, new Intent(ActivityThoughtShow.this, ActivityThoughtShakeup.class));
+                                    NavUtils.navigateUpTo(ActivityHistory.this, new Intent(ActivityHistory.this, ActivityThoughtShakeup.class));
                                     break;
                                 case R.id.action_supporting_literature:
                                     break;

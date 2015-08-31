@@ -57,7 +57,7 @@ public class ActivityThoughtShakeup extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityThoughtShakeup.this, ActivityDiary.class);
+                Intent intent = new Intent(ActivityThoughtShakeup.this, ActivityHistory.class);
                 startActivity(intent);
             }
         });

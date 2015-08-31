@@ -14,8 +14,7 @@
         android:id="@+id/textView7"
         android:gravity="center_vertical|center_horizontal"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/lightgreen_900" />
+        android:paddingBottom="10dp" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -41,8 +40,7 @@
         android:text="Shake it up!"
         android:gravity="center_vertical|center_horizontal"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/lightgreen_900" />
+        android:paddingBottom="10dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -60,5 +58,27 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/lightgreen_900" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ToggleButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:drawable/btn_star"
+            android:textOff=""
+            android:textOn=""
+            android:id="@+id/toggleButtonFavorites" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Favorites"
+            android:id="@+id/textView8"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
 
 </LinearLayout>

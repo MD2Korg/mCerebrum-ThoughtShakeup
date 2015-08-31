@@ -1,17 +1,10 @@
 package org.md2k.thoughtshakeup;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -19,13 +12,8 @@ import android.widget.PopupMenu;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.md2k.datakitapi.time.DateTime;
-import org.md2k.utilities.Report.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -53,13 +41,13 @@ import java.util.HashMap;
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-public class ActivityDiary extends Activity {
-    private static final String TAG = ActivityDiary.class.getSimpleName();
+public class ActivityDiaryOld extends Activity {
+    private static final String TAG = ActivityDiaryOld.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_diary);
+        setContentView(R.layout.activity_diary_old);
         setTitle("Diary");
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -80,7 +68,7 @@ public class ActivityDiary extends Activity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivityDiary.this, ActivityThoughtShow.class);
+                Intent intent = new Intent(ActivityDiaryOld.this, ActivityThoughtShow.class);
                 intent.putExtra("timestamp", timestamp);
                 startActivity(intent);
             }
@@ -139,7 +127,7 @@ public class ActivityDiary extends Activity {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.action_home:
-                                    NavUtils.navigateUpTo(ActivityDiary.this, new Intent(ActivityDiary.this, ActivityThoughtShakeup.class));
+                                    NavUtils.navigateUpTo(ActivityDiaryOld.this, new Intent(ActivityDiaryOld.this, ActivityThoughtShakeup.class));
                                     break;
                                 case R.id.action_supporting_literature:
                                     break;

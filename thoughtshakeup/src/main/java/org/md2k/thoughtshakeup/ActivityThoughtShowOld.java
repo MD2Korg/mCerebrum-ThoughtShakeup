@@ -40,17 +40,30 @@ import java.util.ArrayList;
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-public class ActivityThoughtShow extends Activity {
-    private static final String TAG = ActivityThoughtShow.class.getSimpleName();
+public class ActivityThoughtShowOld extends Activity {
+    private static final String TAG = ActivityThoughtShowOld.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thought_show);
+        setContentView(R.layout.activity_thought_show_old);
         setTitle("History");
         long timestamp=getIntent().getLongExtra("timestamp",-1);
         setThoughts(timestamp);
+        setFavorites(timestamp);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    void setFavorites(final long timestamp){
+        ToggleButton toggleButton= (ToggleButton)findViewById(R.id.toggleButtonFavorites);
+        toggleButton.setChecked(HistoryData.getInstance().get(timestamp).get(0).favorites);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                HistoryData.getInstance().update(timestamp,b);
+            }
+        });
+
     }
     void setThoughts(long timestamp){
         ArrayList<HistoryData.DataPoint> dataPoint= HistoryData.getInstance().get(timestamp);
@@ -86,7 +99,7 @@ public class ActivityThoughtShow extends Activity {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.action_home:
-                                    NavUtils.navigateUpTo(ActivityThoughtShow.this, new Intent(ActivityThoughtShow.this, ActivityThoughtShakeup.class));
+                                    NavUtils.navigateUpTo(ActivityThoughtShowOld.this, new Intent(ActivityThoughtShowOld.this, ActivityThoughtShakeup.class));
                                     break;
                                 case R.id.action_supporting_literature:
                                     break;
