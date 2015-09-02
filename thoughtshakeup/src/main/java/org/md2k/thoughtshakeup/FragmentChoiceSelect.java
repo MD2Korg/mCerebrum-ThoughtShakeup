@@ -76,7 +76,6 @@ public class FragmentChoiceSelect extends FragmentBase {
         CompoundButton.OnCheckedChangeListener listener;
         for (int i = 0; i < question.getQuestion_responses().size(); i++) {
             ToggleButton toggleButton = addToggleButtons(question, i);
-            if(ll.getOrientation()==LinearLayout.VERTICAL) toggleButton.setGravity(Gravity.LEFT);
             if (question.isType(Questions.MULTIPLE_CHOICE))
                 listener = setOnCheckedListenerMultipleChoice(question, toggleButtons);
             else listener = setOnCheckedListenerMultipleSelect(question, toggleButtons);
