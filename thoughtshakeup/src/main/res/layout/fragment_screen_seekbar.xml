@@ -88,11 +88,10 @@
                     android:gravity="left" />
 
                 <SeekBar
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/seekBar"
                     android:max="100"
-                    android:splitTrack="false"
                     android:progress="50"
                     android:layout_weight="1" />
 

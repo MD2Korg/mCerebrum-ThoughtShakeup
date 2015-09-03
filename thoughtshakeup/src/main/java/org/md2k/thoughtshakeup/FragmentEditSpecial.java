@@ -58,7 +58,8 @@ public class FragmentEditSpecial extends FragmentBase {
     EditText editTextThought;
     RelativeLayout layoutEditTextSpecial;
     TextView textViewThoughtCorrectIncorrect;
-    String EVENODD[] = {"My thought is correct because...", "On the other hand, my thought may be inaccurate because..."};
+    String EVENODD[] = {"My thought is correct because...", "On the other hand, my thought may be inaccurate because...",
+            "Additionally, my thought is accurate beacause...","Stil, my thought may be inaccurate becuase..."};
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
@@ -86,7 +87,7 @@ public class FragmentEditSpecial extends FragmentBase {
                 setEditTextFocused();
             else setEditTextNotFocused();
 
-            textViewThoughtCorrectIncorrect.setText(EVENODD[iteration % 2]);
+            textViewThoughtCorrectIncorrect.setText(EVENODD[iteration % ITERATION]);
             textViewThoughtCorrectIncorrect.setTextColor(iteration % 2 == 0 ? getResources().getColor(R.color.blue_400) : getResources().getColor(R.color.orange_600));
         }
     }
@@ -161,8 +162,8 @@ public class FragmentEditSpecial extends FragmentBase {
         layoutParam.addRule(curIteration % 2 == 0 ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT);
         if (curIteration > 0) layoutParam.addRule(RelativeLayout.BELOW, curIteration);
         textView.setLayoutParams(layoutParam);
-        String response = question.getQuestion_responses_selected().get(curIteration);
-        textView.setText(EVENODD[curIteration % 2] + response);
+        String response = EVENODD[curIteration%ITERATION]+question.getQuestion_responses_selected().get(curIteration);
+        textView.setText(response);
         textView.setBackgroundResource(curIteration % 2 == 0 ? R.drawable.correct : R.drawable.incorrect);
         layoutEditTextSpecial.addView(textView);
     }

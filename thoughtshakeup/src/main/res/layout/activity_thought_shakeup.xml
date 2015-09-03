@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Take a moment to shakeup your thoughts can help you become more aware of what is happening in your mind and change how you think for the better"
+        android:text="Take a moment to shakeup your thoughts. It can help you become more aware of what is happening in your mind and change how you think for the better"
         android:id="@+id/textView"
         android:gravity="center" />
 
