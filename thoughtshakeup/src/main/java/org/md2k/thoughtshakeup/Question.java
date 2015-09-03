@@ -44,7 +44,7 @@ public class Question implements Serializable {
     private ArrayList<String> question_responses_selected;
     private long prompt_time;
     private String thoughts;
-    private String shorten;
+    private String shortenText;
     boolean hasResponseSelected(String response){
         if(question_responses_selected==null) return false;
         for(int i=0;i<question_responses_selected.size();i++)
@@ -52,7 +52,7 @@ public class Question implements Serializable {
         return false;
     }
 
-    public Question(int question_id, String question_type, String question_text, ArrayList<String> question_responses, ArrayList<String> condition, String thoughts, String shorten) {
+    public Question(int question_id, String question_type, String question_text, ArrayList<String> question_responses, ArrayList<String> condition, String thoughts, String shortenText) {
         this.question_id = question_id;
         this.question_type = question_type;
         this.question_text = question_text;
@@ -61,11 +61,16 @@ public class Question implements Serializable {
         this.question_responses_selected = new ArrayList<>();
         prompt_time = -1;
         this.thoughts=thoughts;
-        this.shorten=shorten;
+        this.shortenText = shortenText;
     }
 
     public String getThoughts() {
         return thoughts;
+    }
+
+
+    public String getShortenText() {
+        return shortenText;
     }
 
     public void setThoughts(String thoughts) {

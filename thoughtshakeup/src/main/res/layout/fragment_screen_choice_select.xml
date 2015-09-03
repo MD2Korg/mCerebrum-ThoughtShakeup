@@ -6,8 +6,7 @@
     <!-- Dummy content. -->
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/linearLayoutThought"
@@ -27,7 +26,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:paddingBottom="10dp"
                     android:text="Your Thoughts: "
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -36,7 +34,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:paddingBottom="10dp"
                     android:text="Large Text"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/amber_900"
@@ -62,6 +59,15 @@
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="40px" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Tap to Select"
+            android:id="@+id/textViewTap"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:textColor="@color/lightgreen_a700" />
 
         <LinearLayout
             android:id = "@+id/layout_multiple_choice"

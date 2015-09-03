@@ -80,7 +80,7 @@ public class FragmentTextReview extends FragmentBase {
         initializeUI(rootView);
         ((LinearLayout)rootView.findViewById(R.id.linearLayoutThought)).setVisibility(LinearLayout.GONE);
         layoutTextReview = (LinearLayout) rootView.findViewById(R.id.layoutTextReview);
-        for (int qno = 1; qno < question.getQuestion_id(); qno++) {
+        for (int q=ques; qno < question.getQuestion_id(); qno++) {
             Log.d(TAG, "qid=" + qno);
             if(qno==3) continue;
             addTextView(Questions.getInstance().getQuestion(qno));
@@ -90,8 +90,7 @@ public class FragmentTextReview extends FragmentBase {
 
     TextView addQuestionText(Question question) {
         TextView textViewQuestionText = new TextView(getActivity());
-        String questionText = question.getQuestion_text();
-        questionText = questionText.replace("\n", "");
+        String questionText = question.getShortenText();
         textViewQuestionText.setTextAppearance(getActivity(), android.R.style.TextAppearance_DeviceDefault_Small);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         textViewQuestionText.setLayoutParams(params);
@@ -118,6 +117,5 @@ public class FragmentTextReview extends FragmentBase {
 
     void addTextView(Question question) {
         layoutTextReview.addView(addQuestionText(question));
-        layoutTextReview.addView(addQuestionResponse(question));
     }
 }

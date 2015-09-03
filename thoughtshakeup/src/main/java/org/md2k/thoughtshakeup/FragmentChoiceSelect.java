@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import org.md2k.datakitapi.time.DateTime;
@@ -156,8 +157,14 @@ public class FragmentChoiceSelect extends FragmentBase {
         final ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_screen_choice_select, container, false);
         initializeUI(rootView);
-        if (question.isType(Questions.MULTIPLE_CHOICE) || question.isType(Questions.MULTIPLE_SELECT))
+
+        if (question.isType(Questions.MULTIPLE_CHOICE) || question.isType(Questions.MULTIPLE_SELECT)) {
+            ((TextView)rootView.findViewById(R.id.textViewTap)).setText("Tap to select");
             setTypeMultipleChoiceSelect(rootView, question);
+        }
+        else{
+            ((TextView)rootView.findViewById(R.id.textViewTap)).setVisibility(View.GONE);
+        }
         return rootView;
     }
 
