@@ -6,7 +6,8 @@
     <!-- Dummy content. -->
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/linearLayoutThought"
@@ -17,23 +18,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/textViewThoughtTitle"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:paddingBottom="10dp"
                     android:text="Your Thoughts: "
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
                     android:id="@+id/textViewThoughtDesc"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:paddingBottom="10dp"
                     android:text="Large Text"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/amber_900"
@@ -90,17 +93,18 @@
                 android:text="Medium Text"
                 android:id="@+id/textViewThoughtCorrectIncorrect"
                 android:textStyle="bold" />
-            <org.md2k.thoughtshakeup.EditTextDone
+
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ems="10"
                 android:id="@+id/editText_thought"
                 android:background="@drawable/editbox_border"
                 android:focusable="true"
+                android:singleLine="true"
                 android:padding="10dp"
-                android:imeOptions="actionDone"
                 android:text="Please &apos;TAP&apos; here to type..."
-                android:textColor="@color/grey_500"
-                android:inputType="textMultiLine" />
+                android:textColor="@color/grey_500" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

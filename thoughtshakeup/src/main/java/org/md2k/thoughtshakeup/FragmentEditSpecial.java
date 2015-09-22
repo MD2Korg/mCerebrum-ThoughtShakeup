@@ -80,8 +80,10 @@ public class FragmentEditSpecial extends FragmentBase {
             editTextThought.setVisibility(View.GONE);
             textViewThoughtCorrectIncorrect.setVisibility(View.GONE);
             hideKeyboard();
+            Log.d(TAG,"updateNext(true)");
             updateNext(true);
         } else {
+            Log.d(TAG,"updateNext(false)");
             updateNext(false);
             if (editTextThought.isFocused())
                 setEditTextFocused();
@@ -104,8 +106,15 @@ public class FragmentEditSpecial extends FragmentBase {
         for (int i = 0; i < question.getQuestion_responses_selected().size(); i++)
             addTextToBubble(i);
         iteration = question.getQuestion_responses_selected().size();
+        Log.d(TAG, "onCreateView(): iteration=" + iteration);
         updateUI();
         return rootView;
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if(iteration>=ITERATION) updateNext(true);
+        else updateNext(false);
     }
 
     void setEditTextThought(ViewGroup rootView) {

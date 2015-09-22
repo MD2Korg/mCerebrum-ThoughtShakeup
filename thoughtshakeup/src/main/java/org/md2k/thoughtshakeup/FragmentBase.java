@@ -1,14 +1,13 @@
 package org.md2k.thoughtshakeup;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -112,23 +111,22 @@ public class FragmentBase extends Fragment {
     }
 
     public void updateNext(boolean answered){
+        Log.d(TAG,"updateNext("+answered+")");
         if(menu!=null)
         menu.findItem(R.id.action_next).setEnabled(answered);
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu=menu;
-        Log.d(TAG, "fragmentBase -> onCreateOptionsMenu");
+        Log.d(TAG,"onCreateOptionsMenu: updateNext(false)");
         updateNext(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "fragmentBase -> onOptionsItemSelected ->" + item.getItemId());
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case R.id.action_previous:
-                Log.d(TAG,"fragmentBase -> onOptionsItemSelected -> previous");
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -142,7 +140,7 @@ public class FragmentBase extends Fragment {
     void hideKeyboard(){
         View view = getActivity().getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

@@ -68,7 +68,6 @@ public class FragmentChoiceSelect extends FragmentBase {
     }
 
     void setTypeMultipleChoiceSelect(ViewGroup rootView, Question question) {
-        Log.d(TAG, "setTypeMultipleChoiceSelect() question=" + question.getQuestion_id() + " " + question.getQuestion_responses().size());
         LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.layout_multiple_choice);
         if(question.getQuestion_responses().size()>3)
             ll.setOrientation(LinearLayout.VERTICAL);
@@ -172,7 +171,6 @@ public class FragmentChoiceSelect extends FragmentBase {
     private ToggleButton addToggleButtons(final Question question, int response_id) {
         ToggleButton toggleButton = new ToggleButton(this.getActivity());
         String option = question.getQuestion_responses().get(response_id);
-        Log.d(TAG, "addToggleButtons() option=" + option);
         toggleButton.setTextOn(option);
         toggleButton.setTextOff(option);
         toggleButton.setText(option);

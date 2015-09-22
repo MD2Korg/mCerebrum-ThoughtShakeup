@@ -2,16 +2,14 @@ package org.md2k.thoughtshakeup;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.md2k.utilities.Report.Log;
@@ -78,11 +76,9 @@ public class FragmentTextReview extends FragmentBase {
         final ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_screen_text_review, container, false);
         initializeUI(rootView);
-        ((LinearLayout)rootView.findViewById(R.id.linearLayoutThought)).setVisibility(LinearLayout.GONE);
+        rootView.findViewById(R.id.linearLayoutThought).setVisibility(LinearLayout.GONE);
         layoutTextReview = (LinearLayout) rootView.findViewById(R.id.layoutTextReview);
-        for (int q=ques; qno < question.getQuestion_id(); qno++) {
-            Log.d(TAG, "qid=" + qno);
-            if(qno==3) continue;
+        for (int qno=0; qno < question.getQuestion_id(); qno++) {
             addTextView(Questions.getInstance().getQuestion(qno));
         }
         return rootView;
@@ -91,10 +87,16 @@ public class FragmentTextReview extends FragmentBase {
     TextView addQuestionText(Question question) {
         TextView textViewQuestionText = new TextView(getActivity());
         String questionText = question.getShortenText();
-        textViewQuestionText.setTextAppearance(getActivity(), android.R.style.TextAppearance_DeviceDefault_Small);
+        if(questionText==null) return null;
+        if(question.getQuestion_responses_selected().size()==0) return null;
+        if(questionText.contains("(answer)")){
+            questionText=questionText.replace("(answer)",question.getQuestion_responses_selected().get(0));
+        }
+        textViewQuestionText.setTextSize(16);
+//        textViewQuestionText.setTextAppearance(getActivity(), android.R.style.TextAppearance_Medium);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         textViewQuestionText.setLayoutParams(params);
-        textViewQuestionText.setText(questionText);
+        textViewQuestionText.setText(Html.fromHtml(questionText));
         return textViewQuestionText;
     }
 
@@ -116,6 +118,8 @@ public class FragmentTextReview extends FragmentBase {
     }
 
     void addTextView(Question question) {
-        layoutTextReview.addView(addQuestionText(question));
+        TextView tv=addQuestionText(question);
+        if(tv!=null)
+            layoutTextReview.addView(addQuestionText(question));
     }
 }
