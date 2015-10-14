@@ -2,6 +2,7 @@ package org.md2k.thoughtshakeup;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -171,8 +172,8 @@ public class FragmentEditSpecial extends FragmentBase {
         layoutParam.addRule(curIteration % 2 == 0 ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT);
         if (curIteration > 0) layoutParam.addRule(RelativeLayout.BELOW, curIteration);
         textView.setLayoutParams(layoutParam);
-        String response = EVENODD[curIteration%ITERATION]+question.getQuestion_responses_selected().get(curIteration);
-        textView.setText(response);
+        String response = EVENODD[curIteration%ITERATION]+"<b>"+question.getQuestion_responses_selected().get(curIteration)+"</b>";
+        textView.setText(Html.fromHtml(response));
         textView.setBackgroundResource(curIteration % 2 == 0 ? R.drawable.correct : R.drawable.incorrect);
         layoutEditTextSpecial.addView(textView);
     }

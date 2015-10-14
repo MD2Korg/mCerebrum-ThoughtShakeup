@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/action_home"
+    android:title="Home"
+    />
+<item android:id="@+id/action_supporting_literature"
+    android:title="Supporting Literature"
+    />
+<item android:id="@+id/action_history_clear"
+    android:title="Clear History"/>
+
+</menu>

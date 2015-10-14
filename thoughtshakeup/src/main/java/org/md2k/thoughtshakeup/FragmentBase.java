@@ -84,13 +84,13 @@ public class FragmentBase extends Fragment {
         }
         else if(question.getThoughts().equals(Questions.THOUGHT)|| question.getThoughts().equals(Questions.ORIGINAL_THOUGHT)){
             ((TextView) rootView.findViewById(R.id.textViewThoughtTitle)).setText(question.getThoughts());
-            String thoughts="(not entered)";
+            String thoughts="(none)";
             if(Questions.getInstance().getQuestion(1).getQuestion_responses_selected().size()>0)
                 thoughts=Questions.getInstance().getQuestion(1).getQuestion_responses_selected().get(0);
             ((TextView) rootView.findViewById(R.id.textViewThoughtDesc)).setText(thoughts);
         }
         else if(question.getThoughts().equals(Questions.REPHRASED_THOUGHT)){
-            String thoughts="(not entered)";
+            String thoughts="(none)";
             if(Questions.getInstance().getQuestion(12).getQuestion_responses_selected().size()>0)
                 thoughts=Questions.getInstance().getQuestion(12).getQuestion_responses_selected().get(0);
             ((TextView) rootView.findViewById(R.id.textViewThoughtTitle)).setText(Questions.REPHRASED_THOUGHT);

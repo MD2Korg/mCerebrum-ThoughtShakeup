@@ -94,8 +94,9 @@ public class FragmentEdit extends FragmentBase {
         editTextThought.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    String response = editTextThought.getText().toString();
+                    String response = editTextThought.getText().toString().trim();
                     response = response.trim();
+                    question.getQuestion_responses_selected().clear();
                     if (response.length() > 0) {
                         question.getQuestion_responses_selected().add(response);
                     }
@@ -116,23 +117,24 @@ public class FragmentEdit extends FragmentBase {
     }
 
     void setEditTextFocused() {
-        if (editTextThought.getText().toString().equals(Constants.TAP)) {
+        if (editTextThought.getText().toString().trim().equals(Constants.TAP)) {
             editTextThought.setText("");
         }
         editTextThought.setTextColor(getResources().getColor(R.color.BLACK));
     }
 
     void setEditTextNotFocused() {
-        if (editTextThought.getText().toString().length() == 0) {
+        String text=editTextThought.getText().toString().trim();
+        if (text.length() == 0) {
             editTextThought.setText(Constants.TAP);
             editTextThought.setTextColor(getResources().getColor(R.color.BLACK));
         }
     }
     @Override
     public void onPause(){
-        if(!editTextThought.getText().toString().equals(Constants.TAP) && editTextThought.getText().toString().length()!=0) {
+        if(!editTextThought.getText().toString().trim().equals(Constants.TAP) && editTextThought.getText().toString().trim().length()!=0) {
             question.getQuestion_responses_selected().clear();
-            question.getQuestion_responses_selected().add(editTextThought.getText().toString());
+            question.getQuestion_responses_selected().add(editTextThought.getText().toString().trim());
         }
         hideKeyboard();
         super.onPause();

@@ -95,6 +95,11 @@ public class HistoryData{
         if(!file.exists())
             file.mkdirs();
     }
+    public void clear(){
+        File file = new File(Constants.DIR_FILENAME);
+        if(file.exists())
+        file.delete();
+    }
     public void write(){
         try {
             File file = new File(Constants.DIR_FILENAME);

@@ -42,7 +42,8 @@ public class Questions {
     public static final String ORIGINAL_THOUGHT = "Original Thought: ";
     public static final String REPHRASED_THOUGHT = "Rephrased Thought: ";
     public static final String TEXT_REVIEW = "text_review";
-    public static final String COLOR = "color";
+    long startTime;
+    long endTime;
 
     public static final String MULTIPLE_SELECT_SPECIAL = "multiple_select_special";
 
@@ -63,6 +64,12 @@ public class Questions {
     private Questions() {
 
     }
+    void setStartTime(long startTime){
+        this.startTime=startTime;
+    }
+    void setEndTime(long endTime){
+        this.endTime=endTime;
+    }
 
     public void destroy() {
         instance = null;
@@ -70,16 +77,16 @@ public class Questions {
 
     private Question[] thoughts = new Question[]{
             new Question(0, TEXT, "The unpleasant thoughts that cross our minds are often exaggerated or inaccurate.\n\nThe following exercise is designed to help you shakeup your thoughts. You can use it to evaluate your thoughts, examine how accurate they are, and replace them with more accurate thoughts.", null, null, null,null),
-            new Question(1, EDITTEXT, "Think about an unpleasant thought you are currently having.\n\nPlease type that thought in the box below. You can still continue with the exercise even if you don't type anything.", null, null, null,"&#8226; Here is the unpleasant thought you had in mind <b>(answer)</b><br/>"),
-            new Question(2, SEEKBAR, "How true do you believe this thought is?", null, null, THOUGHT, "&#8226; You believe this thought is <b>(answer)</b> percent true<br/>"),
+            new Question(1, EDITTEXT, "Think about an unpleasant thought you are currently having.\n\nPlease type that thought in the box below. You can still continue with the exercise even if you don't type anything.", null, null, null,"Here is the unpleasant thought you had in mind <b>(answer)</b>"),
+            new Question(2, SEEKBAR, "How true do you believe this thought is?", null, null, THOUGHT, "&#8226; You believe this thought is <b>(answer)</b> percent true"),
             new Question(3, TEXT, "On the following screens there are some questions regarding your thought.\n\nThere are no correct or incorrect answers. Please select the response that seems most correct for you.", null, null, null,null),
-            new Question(4, MULTIPLE_CHOICE, "My thought is based on a \"black-and-white\", \"all-or-nothing\" view. For example, \"If I am not the absolute best, it means I'm worthless\".", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is based on a \"black-and-white\", \"all-or-nothing\" view.<br/>"),
-            new Question(5, MULTIPLE_CHOICE, "My thought is affected by my focus on the negative aspects of the situation rather than the whole picture.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is affected by your focus on the negative aspects of the situation rather than the whole picture.<br/>"),
-            new Question(6, MULTIPLE_CHOICE, "My thought is affected by the idea that everything is related to me or caused by me. It doesn't take into account external circumstances or other people's responsibility.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is affected by the idea that everything is related to you or caused by you; that it doesn't take into account external circumstances or other people's responsibility.<br/>"),
+            new Question(4, MULTIPLE_CHOICE, "My thought is based on a \"black-and-white\", \"all-or-nothing\" view. For example, \"If I am not the absolute best, it means I'm worthless\".", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is based on a \"black-and-white\", \"all-or-nothing\" view."),
+            new Question(5, MULTIPLE_CHOICE, "My thought is affected by my focus on the negative aspects of the situation rather than the whole picture.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is affected by your focus on the negative aspects of the situation rather than the whole picture."),
+            new Question(6, MULTIPLE_CHOICE, "My thought is affected by the idea that everything is related to me or caused by me. It doesn't take into account external circumstances or other people's responsibility.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is affected by the idea that everything is related to you or caused by you; that it doesn't take into account external circumstances or other people's responsibility."),
             new Question(7, MULTIPLE_CHOICE, "My thought is affected by what I've decided others think about me, even if this is not what they really think.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is affected by what you've decided others think about you, even if this is not what they really think."),
-            new Question(8, MULTIPLE_CHOICE, "My thought does not take into account my successes or good qualities.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought does not take into account your successes or good qualities.<br/>"),
-            new Question(9, MULTIPLE_CHOICE, "My thought is influenced by the overly negative consequences I think certain events or conditions will have on my future.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is influenced by the overly negative consequences you think certain events or conditions will have on your future.<br/>"),
-            new Question(10, EDITTEXT_SPECIAL, "In the box below, use the provided sentence starters to come up with reasons why your thought may be correct or incorrect.", null, null, THOUGHT,"&#8226; You also noted the following reasons for why your thought may be correct or incorrect: <b>(answer)</b><br/>"),
+            new Question(8, MULTIPLE_CHOICE, "My thought does not take into account my successes or good qualities.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought does not take into account your successes or good qualities."),
+            new Question(9, MULTIPLE_CHOICE, "My thought is influenced by the overly negative consequences I think certain events or conditions will have on my future.", new ArrayList<String>(Arrays.asList(new String[]{"Strongly Agree", "Agree", "Neither agree or disagree", "Disagree", "Strongly Disagree"})), null, THOUGHT,"&#8226; You <b>(answer)</b> that your thought is influenced by the overly negative consequences you think certain events or conditions will have on your future."),
+            new Question(10, EDITTEXT_SPECIAL, "In the box below, use the provided sentence starters to come up with reasons why your thought may be correct or incorrect.", null, null, THOUGHT,"<u><i><b><br>You also noted the following reasons for why your thought may be correct or incorrect: </u></i></b>"),
             new Question(11, TEXT_REVIEW, "Please take a moment to review your answers to the previous questions and reflect on how your thought might be phrased differently taking these answers into account.", null, null, null,null),
             new Question(12, EDITTEXT, "Try rephrasing your thought in a way that reflects reality as accurately as possible. The new wording does not need to be more positive, just more realistic.", null, null, ORIGINAL_THOUGHT,null),
             new Question(13, SEEKBAR, "How correct is your new thought\n(Touch and drag)", null, null, REPHRASED_THOUGHT,null),

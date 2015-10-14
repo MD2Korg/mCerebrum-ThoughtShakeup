@@ -20,4 +20,10 @@
     <color name="lightgreen_a400">#76FF03</color>
     <color name="lightgreen_a700">#64DD17</color>
 
+    <color name="grey_500">#9E9E9E</color>
+    <color name="blue_400">#42A5F5</color>
+    <color name="orange_600">#FB8C00</color>
+
+
+
 </resources>

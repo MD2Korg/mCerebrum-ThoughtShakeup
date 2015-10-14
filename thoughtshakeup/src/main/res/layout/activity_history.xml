@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ActivityDiary">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="This history page presents the list of original thoughts you entered and how you rephrased them. Tap on your original Thought to view the more realistic one. You can use this page at anytime to quickly shake up negative thoughts."
+        android:id="@+id/textView"
+        android:gravity="center"
+        android:paddingBottom="30dp" />
+
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/content"

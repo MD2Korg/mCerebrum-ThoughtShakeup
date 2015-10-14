@@ -9,21 +9,26 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import org.md2k.datakitapi.messagehandler.OnConnectionListener;
+import org.md2k.utilities.Report.Log;
+import org.md2k.utilities.UI.UIShow;
+import org.md2k.utilities.datakit.DataKitHandler;
+
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
  * - Syed Monowar Hossain <monowar.hossain@gmail.com>
  * All rights reserved.
- *
+ * <p/>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * <p/>
  * * Redistributions of source code must retain the above copyright notice, this
  * list of conditions and the following disclaimer.
- *
+ * <p/>
  * * Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- *
+ * <p/>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,11 +42,16 @@ import android.widget.PopupMenu;
  */
 
 public class ActivityThoughtShakeup extends Activity {
+    DataKitHandler dataKitHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thought_shakeup);
+        if (!connectDataKit()) {
+            UIShow.ErrorDialog(this, "DataKit Error", "DataKit is not available.\n\nPlease Install DataKit");
+        }
+
         Button button;
         button = (Button) findViewById(R.id.button_shakeup);
         button.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +72,25 @@ public class ActivityThoughtShakeup extends Activity {
             }
         });
         getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private boolean connectDataKit() {
+        if (dataKitHandler == null)
+            dataKitHandler = DataKitHandler.getInstance(getApplicationContext());
+        return dataKitHandler.isConnected() || dataKitHandler.connect(new OnConnectionListener() {
+            @Override
+            public void onConnected() {
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        if (dataKitHandler.isConnected())
+            dataKitHandler.disconnect();
+        dataKitHandler.close();
+        dataKitHandler = null;
+        super.onDestroy();
     }
 
     @Override

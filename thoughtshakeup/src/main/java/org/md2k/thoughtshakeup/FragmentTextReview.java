@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import org.md2k.utilities.Report.Log;
 
+import java.util.ArrayList;
+
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -78,26 +80,53 @@ public class FragmentTextReview extends FragmentBase {
         initializeUI(rootView);
         rootView.findViewById(R.id.linearLayoutThought).setVisibility(LinearLayout.GONE);
         layoutTextReview = (LinearLayout) rootView.findViewById(R.id.layoutTextReview);
-        for (int qno=0; qno < question.getQuestion_id(); qno++) {
-            addTextView(Questions.getInstance().getQuestion(qno));
+        for (int qno = 0; qno < question.getQuestion_id(); qno++) {
+            Question curQuestion = Questions.getInstance().getQuestion(qno);
+            if (curQuestion.getQuestion_id() == 10) {
+                if(curQuestion.getQuestion_responses_selected().size()!=4) continue;
+                layoutTextReview.addView(createTextView(curQuestion.getShortenText(), 0));
+                layoutTextReview.addView(createTextView("&#8226; My thought is correct because <b>" + curQuestion.getQuestion_responses_selected().get(0) + "</b>", 40));
+                layoutTextReview.addView(createTextView("&#8226; On the other hand, my though may be inaccurate because <b>" + curQuestion.getQuestion_responses_selected().get(1) + "</b>", 40));
+                layoutTextReview.addView(createTextView("&#8226; Additionally, my thought is accurate because <b>" + curQuestion.getQuestion_responses_selected().get(2) + "</b>", 40));
+                layoutTextReview.addView(createTextView("&#8226; Still, my thought may be inaccurate because <b>" + curQuestion.getQuestion_responses_selected().get(3) + "</b>", 40));
+            } else if(curQuestion.getQuestion_id()==1){
+                if(curQuestion.getQuestion_responses_selected().size()==0){
+                    ArrayList<String> answer=new ArrayList<>();
+                    answer.add("(none)");
+                    curQuestion.setQuestion_responses_selected(answer);
+                    addTextView(curQuestion);
+                    answer.clear();
+                    curQuestion.setQuestion_responses_selected(answer);
+                }
+                else
+                    addTextView(curQuestion);
+                addTextView("<i><u><b>You noted that:</b></u></i>");
+            }
+            else
+                addTextView(curQuestion);
         }
         return rootView;
     }
 
-    TextView addQuestionText(Question question) {
-        TextView textViewQuestionText = new TextView(getActivity());
-        String questionText = question.getShortenText();
-        if(questionText==null) return null;
-        if(question.getQuestion_responses_selected().size()==0) return null;
-        if(questionText.contains("(answer)")){
-            questionText=questionText.replace("(answer)",question.getQuestion_responses_selected().get(0));
-        }
-        textViewQuestionText.setTextSize(16);
-//        textViewQuestionText.setTextAppearance(getActivity(), android.R.style.TextAppearance_Medium);
+    TextView createTextView(String text, int padLeft) {
+        if (text == null) return null;
+        TextView textView = new TextView(getActivity());
+        textView.setTextSize(16);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        textViewQuestionText.setLayoutParams(params);
-        textViewQuestionText.setText(Html.fromHtml(questionText));
-        return textViewQuestionText;
+        textView.setLayoutParams(params);
+        textView.setText(Html.fromHtml(text));
+        textView.setPadding(padLeft, 0, 0, 0);
+        return textView;
+    }
+
+    TextView addQuestionText(Question question) {
+        String questionText = question.getShortenText();
+        if (questionText == null) return null;
+        if (question.getQuestion_responses_selected().size() == 0) return null;
+        if (questionText.contains("(answer)")) {
+            questionText = questionText.replace("(answer)", question.getQuestion_responses_selected().get(0));
+        }
+        return createTextView(questionText, 40);
     }
 
     TextView addQuestionResponse(Question question) {
@@ -118,8 +147,15 @@ public class FragmentTextReview extends FragmentBase {
     }
 
     void addTextView(Question question) {
-        TextView tv=addQuestionText(question);
-        if(tv!=null)
-            layoutTextReview.addView(addQuestionText(question));
+        TextView tv = addQuestionText(question);
+        if (tv != null)
+            layoutTextReview.addView(tv);
     }
+
+    void addTextView(String text) {
+        TextView tv = createTextView(text, 0);
+        if (tv != null)
+            layoutTextReview.addView(tv);
+    }
+
 }

@@ -1,17 +1,26 @@
 package org.md2k.thoughtshakeup;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.NavUtils;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.md2k.utilities.Report.Log;
 
 import java.util.ArrayList;
 
@@ -49,7 +58,8 @@ public class ActivityHistory extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         setTitle("History");
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getActionBar()!=null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
     protected void onResume(){
@@ -60,24 +70,34 @@ public class ActivityHistory extends Activity {
         TextView textView=new TextView(this);
         textView.setText(text);
         textView.setGravity(Gravity.CENTER);
-        textView.setBackgroundResource(R.drawable.table_border);
         textView.setTextAppearance(this, android.R.style.TextAppearance_DeviceDefault_Medium);
-        textView.setTag(timestamp);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ActivityHistory.this, ActivityThoughtShow.class);
-                intent.putExtra("timestamp", timestamp);
-                startActivity(intent);
-            }
-        });
+        if(timestamp!=-1) {
+            textView.setBackgroundResource(R.drawable.table_border);
+            textView.setTag(timestamp);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ActivityHistory.this, ActivityThoughtShow.class);
+                    intent.putExtra("timestamp", timestamp);
+                    startActivity(intent);
+                }
+            });
+        }else{
+            textView.setTypeface(null, Typeface.BOLD);
+            textView.setBackgroundResource(R.drawable.table_border_header);
+        }
 
         textView.setPadding(32, 32, 32, 32);
         return textView;
     }
+
     void loadHistory(){
         TableLayout tableLayout=(TableLayout)findViewById(R.id.tablelayout_history);
         tableLayout.removeAllViews();
+        TableRow tableRowHeader=new TableRow(this);
+        tableRowHeader.addView(createTextView("Original Thoughts",-1));
+        tableLayout.addView(tableRowHeader);
+
         ArrayList<HistoryData.DataPoint> datapoints=HistoryData.getInstance().get(false);
         for(int i=0;i<datapoints.size();i++){
             TableRow tableRow=new TableRow(this);
@@ -105,7 +125,7 @@ public class ActivityHistory extends Activity {
                     int resId = getResources().getIdentifier("home", "id", "android");
                     popup = new PopupMenu(getActionBar().getThemedContext(), v.findViewById(resId));
                     //Inflating the Popup using xml file
-                    popup.getMenuInflater().inflate(R.menu.menu_options, popup.getMenu());
+                    popup.getMenuInflater().inflate(R.menu.menu_history_clear, popup.getMenu());
 
                     //registering popup with OnMenuItemClickListener
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -116,6 +136,10 @@ public class ActivityHistory extends Activity {
                                     break;
                                 case R.id.action_supporting_literature:
                                     break;
+                                case R.id.action_history_clear:
+                                    buildAlertMessageHistoryClear();
+                                    break;
+
                                 default:
                                     break;
                             }
@@ -129,6 +153,22 @@ public class ActivityHistory extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
+    private void buildAlertMessageHistoryClear() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to clear the history?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        HistoryData.getInstance().clear();
+                        Toast.makeText(ActivityHistory.this, "History is cleared", Toast.LENGTH_SHORT).show();
+                        loadHistory();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

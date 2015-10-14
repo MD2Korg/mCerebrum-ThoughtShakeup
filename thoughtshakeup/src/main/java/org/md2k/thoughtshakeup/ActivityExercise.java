@@ -9,6 +9,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +17,17 @@ import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import org.md2k.datakitapi.datatype.DataTypeString;
+import org.md2k.datakitapi.source.datasource.DataSourceBuilder;
+import org.md2k.datakitapi.source.datasource.DataSourceClient;
+import org.md2k.datakitapi.source.datasource.DataSourceType;
+import org.md2k.datakitapi.source.platform.PlatformBuilder;
+import org.md2k.datakitapi.source.platform.PlatformType;
 import org.md2k.datakitapi.time.DateTime;
 import org.md2k.utilities.Report.Log;
+import org.md2k.utilities.datakit.DataKitHandler;
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -56,6 +66,7 @@ public class ActivityExercise extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Questions.getInstance().setStartTime(DateTime.getDateTime());
         questions = Questions.getInstance().getQuestions();
         setContentView(R.layout.activity_thought_exercise);
         setTitle("Shakeup your Thoughts");
@@ -75,7 +86,8 @@ public class ActivityExercise extends Activity {
                 invalidateOptionsMenu();
             }
         });
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -155,13 +167,14 @@ public class ActivityExercise extends Activity {
                 if (!questions[mPager.getCurrentItem()].isValid()) {
                     Toast.makeText(getBaseContext(), "Please answer the question first", Toast.LENGTH_SHORT).show();
                 } else if (mPager.getCurrentItem() >= questions.length - 1) {
-                    if(Questions.getInstance().getQuestion(1).getQuestion_responses_selected().size()!=0) {
+                    if (Questions.getInstance().getQuestion(1).getQuestion_responses_selected().size() != 0) {
                         String thoughts = Questions.getInstance().getQuestion(1).getQuestion_responses_selected().get(0);
                         String rephrase = Questions.getInstance().getQuestion(12).getQuestion_responses_selected().get(0);
                         HistoryData.getInstance().add(DateTime.getDateTime(), thoughts, rephrase, false);
                     }
+                    Questions.getInstance().setEndTime(DateTime.getDateTime());
+                    insertDataToDataKit(new QuestionsJSON(Questions.getInstance()));
                     Questions.getInstance().destroy();
-                    //TODO: send data to datakit
                     finish();
                 } else if (questions[mPager.getCurrentItem()].isValid()) {
                     mPager.getAdapter().notifyDataSetChanged();
@@ -208,12 +221,12 @@ public class ActivityExercise extends Activity {
             Log.d(TAG, "getItem(): position=" + position);
             if (questions[position].isType(Questions.EDITTEXT))
                 fragmentBase = FragmentEdit.create(position);
-            else if(questions[position].isType(Questions.SEEKBAR))
-                fragmentBase=FragmentSeekBar.create(position);
-            else if(questions[position].isType(Questions.TEXT_REVIEW))
-                fragmentBase= FragmentTextReview.create(position);
-            else if(questions[position].isType(Questions.EDITTEXT_SPECIAL))
-                fragmentBase=FragmentEditSpecial.create(position);
+            else if (questions[position].isType(Questions.SEEKBAR))
+                fragmentBase = FragmentSeekBar.create(position);
+            else if (questions[position].isType(Questions.TEXT_REVIEW))
+                fragmentBase = FragmentTextReview.create(position);
+            else if (questions[position].isType(Questions.EDITTEXT_SPECIAL))
+                fragmentBase = FragmentEditSpecial.create(position);
             else
                 fragmentBase = FragmentChoiceSelect.create(position);
             return fragmentBase;
@@ -231,4 +244,25 @@ public class ActivityExercise extends Activity {
             return POSITION_NONE;
         }
     }
+    void insertDataToDataKit(QuestionsJSON questionsJSON) {
+        DataKitHandler dataKitHandler = DataKitHandler.getInstance(getApplicationContext());
+        if (dataKitHandler.isConnected()) {
+            DataSourceBuilder dataSourceBuilder = createDataSourceBuilder();
+            DataSourceClient dataSourceClient = dataKitHandler.register(dataSourceBuilder);
+            Gson gson = new Gson();
+            String json = gson.toJson(questionsJSON);
+            DataTypeString dataTypeString = new DataTypeString(DateTime.getDateTime(), json);
+            dataKitHandler.insert(dataSourceClient, dataTypeString);
+            Toast.makeText(this, "Information is Saved", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "DataKit is not available. Data could not be saved", Toast.LENGTH_LONG).show();
+        }
+    }
+    DataSourceBuilder createDataSourceBuilder() {
+        TelephonyManager mngr = (TelephonyManager) getBaseContext().getSystemService(TELEPHONY_SERVICE);
+        PlatformBuilder platformBuilder = new PlatformBuilder().setType(PlatformType.PHONE).setId(mngr.getDeviceId());
+        Log.d(TAG, "Phone IMEI=" + mngr.getDeviceId());
+        return new DataSourceBuilder().setType(DataSourceType.SURVEY).setPlatform(platformBuilder.build());
+    }
+
 }
