@@ -154,7 +154,6 @@ public class ActivityExercise extends Activity {
                 // Go to the previous step in the wizard. If there is no previous step,
                 // setCurrentItem will do nothing.
                 Log.d(TAG, "activity -> onOptionsItemSelected -> previous");
-
                 Log.d(TAG, "Previous button: " + mPager.getCurrentItem());
                 mPager.getAdapter().notifyDataSetChanged();
                 mPager.setCurrentItem(findValidQuestionPrevious(mPager.getCurrentItem()));
@@ -162,7 +161,6 @@ public class ActivityExercise extends Activity {
             case R.id.action_next:
                 // Advance to the next step in the wizard. If there is no next step, setCurrentItem
                 // will do nothing.
-                //TODO: next when can be done
                 Log.d(TAG, "Next button" + " current=" + mPager.getCurrentItem());
                 if (!questions[mPager.getCurrentItem()].isValid()) {
                     Toast.makeText(getBaseContext(), "Please answer the question first", Toast.LENGTH_SHORT).show();
@@ -177,6 +175,7 @@ public class ActivityExercise extends Activity {
                     Questions.getInstance().destroy();
                     finish();
                 } else if (questions[mPager.getCurrentItem()].isValid()) {
+                    questions[mPager.getCurrentItem()].setCompletion_time(DateTime.getDateTime());
                     mPager.getAdapter().notifyDataSetChanged();
                     mPager.setCurrentItem(findValidQuestionNext(mPager.getCurrentItem()));
                 }

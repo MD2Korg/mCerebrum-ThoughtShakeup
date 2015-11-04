@@ -25,11 +25,6 @@
             />
         </activity>
         <activity
-            android:name=".ActivityDiaryOld"
-            android:uiOptions="splitActionBarWhenNarrow">
-            />
-        </activity>
-        <activity
             android:name=".ActivityHistory"
             android:uiOptions="splitActionBarWhenNarrow">
             />

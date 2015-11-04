@@ -102,8 +102,6 @@ public class FragmentBase extends Fragment {
         question.setPrompt_time(DateTime.getDateTime());
         setThoughts(rootView);
         setQuestionText(rootView, question);
-        question.setPrompt_time(DateTime.getDateTime());
-
     }
 
     void setQuestionText(ViewGroup rootView, Question question) {

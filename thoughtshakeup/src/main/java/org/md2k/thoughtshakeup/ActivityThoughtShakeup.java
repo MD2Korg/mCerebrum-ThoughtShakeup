@@ -10,8 +10,7 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 
 import org.md2k.datakitapi.messagehandler.OnConnectionListener;
-import org.md2k.utilities.Report.Log;
-import org.md2k.utilities.UI.UIShow;
+import org.md2k.utilities.UI.AlertDialogs;
 import org.md2k.utilities.datakit.DataKitHandler;
 
 /**
@@ -49,7 +48,7 @@ public class ActivityThoughtShakeup extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thought_shakeup);
         if (!connectDataKit()) {
-            UIShow.ErrorDialog(this, "DataKit Error", "DataKit is not available.\n\nPlease Install DataKit");
+            AlertDialogs.showAlertDialogDataKit(this);
         }
 
         Button button;
@@ -71,7 +70,8 @@ public class ActivityThoughtShakeup extends Activity {
                 startActivity(intent);
             }
         });
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getActionBar()!=null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private boolean connectDataKit() {

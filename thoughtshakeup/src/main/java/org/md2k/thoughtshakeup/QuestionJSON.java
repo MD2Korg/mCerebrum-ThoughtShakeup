@@ -30,12 +30,22 @@ import java.util.ArrayList;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 public class QuestionJSON implements Serializable{
-    String question;
+    int question_id;
+    String question_type;
+    String question_text;
+    ArrayList<String> response_option;
     ArrayList<String> response;
+    ArrayList<String> condition;
     long prompt_time;
-    QuestionJSON(String question,ArrayList<String> response,long prompt_time){
-        this.question=question;
-        this.response=response;
-        this.prompt_time=prompt_time;
+    long completion_time;
+    QuestionJSON(Question question){
+        question_id=question.getQuestion_id();
+        question_type=question.getQuestion_type();
+        question_text=question.getQuestion_text();
+        response_option=question.getQuestion_responses();
+        response=question.getQuestion_responses_selected();
+        condition=question.getCondition();
+        prompt_time=question.getPrompt_time();
+        completion_time=question.getCompletion_time();
     }
 }

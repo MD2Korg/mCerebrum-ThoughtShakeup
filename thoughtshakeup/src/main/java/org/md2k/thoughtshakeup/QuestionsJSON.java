@@ -31,19 +31,17 @@ import java.util.ArrayList;
  */
 public class QuestionsJSON implements Serializable {
     long start_time;
-    long end_time;
+    long completion_time;
     ArrayList<QuestionJSON> questions;
 
     QuestionsJSON(Questions questions) {
         start_time = questions.startTime;
-        end_time = questions.endTime;
+        completion_time = questions.endTime;
         prepareQuestion(questions.getQuestions());
     }
 
     void prepareQuestion(Question question[]) {
         questions = new ArrayList<>();
-        for (Question aQuestion : question) {
-            questions.add(new QuestionJSON(aQuestion.getQuestion_text(), aQuestion.getQuestion_responses_selected(), aQuestion.getPrompt_time()));
-        }
+        for (Question aQuestion : question) questions.add(new QuestionJSON(aQuestion));
     }
 }

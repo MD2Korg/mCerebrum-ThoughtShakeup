@@ -43,6 +43,7 @@ public class Question implements Serializable {
     private ArrayList<String> condition;
     private ArrayList<String> question_responses_selected;
     private long prompt_time;
+    private long completion_time;
     private String thoughts;
     private String shortenText;
     boolean hasResponseSelected(String response){
@@ -181,6 +182,14 @@ public class Question implements Serializable {
     public void clear(){
         setQuestion_responses_selected(new ArrayList<String>());
         setPrompt_time(-1);
+    }
+
+    public long getCompletion_time() {
+        return completion_time;
+    }
+
+    public void setCompletion_time(long completion_time) {
+        this.completion_time = completion_time;
     }
 }
 

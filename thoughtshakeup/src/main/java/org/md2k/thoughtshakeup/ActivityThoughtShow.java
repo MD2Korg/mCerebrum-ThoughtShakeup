@@ -48,14 +48,16 @@ public class ActivityThoughtShow extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thought_show);
         setTitle("History");
-        long timestamp=getIntent().getLongExtra("timestamp",-1);
+        long timestamp = getIntent().getLongExtra("timestamp", -1);
         setThoughts(timestamp);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    void setThoughts(long timestamp){
-        ArrayList<HistoryData.DataPoint> dataPoint= HistoryData.getInstance().get(timestamp);
-        ((TextView)findViewById(R.id.textViewThought)).setText(dataPoint.get(0).thought);
-        ((TextView)findViewById(R.id.textViewRephrase)).setText(dataPoint.get(0).rephrase);
+
+    void setThoughts(long timestamp) {
+        ArrayList<HistoryData.DataPoint> dataPoint = HistoryData.getInstance().get(timestamp);
+        ((TextView) findViewById(R.id.textViewThought)).setText(dataPoint.get(0).thought);
+        ((TextView) findViewById(R.id.textViewRephrase)).setText(dataPoint.get(0).rephrase);
 
     }
 
