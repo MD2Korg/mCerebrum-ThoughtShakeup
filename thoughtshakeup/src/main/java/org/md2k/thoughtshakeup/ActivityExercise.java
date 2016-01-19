@@ -20,13 +20,17 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.md2k.datakitapi.datatype.DataTypeString;
+import org.md2k.datakitapi.messagehandler.OnConnectionListener;
+import org.md2k.datakitapi.source.METADATA;
 import org.md2k.datakitapi.source.datasource.DataSourceBuilder;
 import org.md2k.datakitapi.source.datasource.DataSourceClient;
 import org.md2k.datakitapi.source.datasource.DataSourceType;
+import org.md2k.datakitapi.source.platform.Platform;
 import org.md2k.datakitapi.source.platform.PlatformBuilder;
 import org.md2k.datakitapi.source.platform.PlatformType;
 import org.md2k.datakitapi.time.DateTime;
 import org.md2k.utilities.Report.Log;
+import org.md2k.utilities.UI.AlertDialogs;
 import org.md2k.utilities.datakit.DataKitHandler;
 
 /**
@@ -62,6 +66,7 @@ public class ActivityExercise extends Activity {
 
     private PagerAdapter mPagerAdapter;
     Question[] questions = null;
+    DataKitHandler dataKitHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +91,15 @@ public class ActivityExercise extends Activity {
                 invalidateOptionsMenu();
             }
         });
+        dataKitHandler = DataKitHandler.getInstance(getApplicationContext());
+        if (dataKitHandler.connect(new OnConnectionListener() {
+            @Override
+            public void onConnected() {
+            }
+        }) == false) {
+            AlertDialogs.showAlertDialogDataKit(this);
+            finish();
+        }
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -243,25 +257,24 @@ public class ActivityExercise extends Activity {
             return POSITION_NONE;
         }
     }
+
     void insertDataToDataKit(QuestionsJSON questionsJSON) {
-        DataKitHandler dataKitHandler = DataKitHandler.getInstance(getApplicationContext());
-        if (dataKitHandler.isConnected()) {
-            DataSourceBuilder dataSourceBuilder = createDataSourceBuilder();
-            DataSourceClient dataSourceClient = dataKitHandler.register(dataSourceBuilder);
-            Gson gson = new Gson();
-            String json = gson.toJson(questionsJSON);
-            DataTypeString dataTypeString = new DataTypeString(DateTime.getDateTime(), json);
-            dataKitHandler.insert(dataSourceClient, dataTypeString);
-            Toast.makeText(this, "Information is Saved", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "DataKit is not available. Data could not be saved", Toast.LENGTH_LONG).show();
-        }
-    }
-    DataSourceBuilder createDataSourceBuilder() {
-        TelephonyManager mngr = (TelephonyManager) getBaseContext().getSystemService(TELEPHONY_SERVICE);
-        PlatformBuilder platformBuilder = new PlatformBuilder().setType(PlatformType.PHONE).setId(mngr.getDeviceId());
-        Log.d(TAG, "Phone IMEI=" + mngr.getDeviceId());
-        return new DataSourceBuilder().setType(DataSourceType.SURVEY).setPlatform(platformBuilder.build());
+        DataSourceBuilder dataSourceBuilder = createDataSourceBuilder();
+        DataSourceClient dataSourceClient = dataKitHandler.register(dataSourceBuilder);
+        Gson gson = new Gson();
+        String json = gson.toJson(questionsJSON);
+        Log.d(TAG,"thoughtshakeup="+json);
+        DataTypeString dataTypeString = new DataTypeString(DateTime.getDateTime(), json);
+        dataKitHandler.insert(dataSourceClient, dataTypeString);
+        Toast.makeText(this, "Information is Saved", Toast.LENGTH_SHORT).show();
     }
 
+    DataSourceBuilder createDataSourceBuilder() {
+        Platform platform = new PlatformBuilder().setType(PlatformType.PHONE).setMetadata(METADATA.NAME, "Phone").build();
+        DataSourceBuilder dataSourceBuilder = new DataSourceBuilder().setType(DataSourceType.SURVEY).setPlatform(platform);
+        dataSourceBuilder = dataSourceBuilder.setMetadata(METADATA.NAME, "Survey");
+        dataSourceBuilder = dataSourceBuilder.setMetadata(METADATA.DESCRIPTION, "Thought Shakeup Questions & Answers");
+        dataSourceBuilder = dataSourceBuilder.setMetadata(METADATA.DATA_TYPE, DataTypeString.class.getName());
+        return dataSourceBuilder;
+    }
 }

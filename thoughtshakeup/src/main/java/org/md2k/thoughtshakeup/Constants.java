@@ -32,7 +32,7 @@ import java.io.File;
  */
 public class Constants {
     public static final String TAP = "Please 'TAP' here to type...";
-    public static final String DIRECTORY = Environment.getExternalStorageDirectory() + File.separator + "mCerebrum" + File.separator + "thoughtshakeup";
+    public static final String DIRECTORY = Environment.getExternalStorageDirectory() + File.separator + "mCerebrum" + File.separator + "org.md2k.thoughtshakeup";
     public static final String FILENAME = "history.csv";
     public static final String DIR_FILENAME = DIRECTORY + File.separator + FILENAME;
 }
