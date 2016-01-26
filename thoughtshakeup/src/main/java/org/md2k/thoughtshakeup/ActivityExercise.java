@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.md2k.datakitapi.DataKitAPI;
 import org.md2k.datakitapi.datatype.DataTypeString;
 import org.md2k.datakitapi.messagehandler.OnConnectionListener;
+import org.md2k.datakitapi.messagehandler.OnExceptionListener;
 import org.md2k.datakitapi.source.METADATA;
 import org.md2k.datakitapi.source.datasource.DataSourceBuilder;
 import org.md2k.datakitapi.source.datasource.DataSourceClient;
@@ -28,10 +30,10 @@ import org.md2k.datakitapi.source.datasource.DataSourceType;
 import org.md2k.datakitapi.source.platform.Platform;
 import org.md2k.datakitapi.source.platform.PlatformBuilder;
 import org.md2k.datakitapi.source.platform.PlatformType;
+import org.md2k.datakitapi.status.Status;
 import org.md2k.datakitapi.time.DateTime;
 import org.md2k.utilities.Report.Log;
 import org.md2k.utilities.UI.AlertDialogs;
-import org.md2k.utilities.datakit.DataKitHandler;
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -66,7 +68,7 @@ public class ActivityExercise extends Activity {
 
     private PagerAdapter mPagerAdapter;
     Question[] questions = null;
-    DataKitHandler dataKitHandler;
+    DataKitAPI dataKitAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +93,19 @@ public class ActivityExercise extends Activity {
                 invalidateOptionsMenu();
             }
         });
-        dataKitHandler = DataKitHandler.getInstance(getApplicationContext());
-        if (dataKitHandler.connect(new OnConnectionListener() {
+        dataKitAPI = DataKitAPI.getInstance(getApplicationContext());
+        dataKitAPI.connect(new OnConnectionListener() {
             @Override
             public void onConnected() {
             }
-        }) == false) {
-            AlertDialogs.showAlertDialogDataKit(this);
-            finish();
-        }
+        }, new OnExceptionListener() {
+            @Override
+            public void onException(Status status) {
+                android.util.Log.d(TAG, "onException...");
+                Toast.makeText(ActivityExercise.this, "AutoSense Stopped. Error: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -260,12 +266,12 @@ public class ActivityExercise extends Activity {
 
     void insertDataToDataKit(QuestionsJSON questionsJSON) {
         DataSourceBuilder dataSourceBuilder = createDataSourceBuilder();
-        DataSourceClient dataSourceClient = dataKitHandler.register(dataSourceBuilder);
+        DataSourceClient dataSourceClient = dataKitAPI.register(dataSourceBuilder);
         Gson gson = new Gson();
         String json = gson.toJson(questionsJSON);
         Log.d(TAG,"thoughtshakeup="+json);
         DataTypeString dataTypeString = new DataTypeString(DateTime.getDateTime(), json);
-        dataKitHandler.insert(dataSourceClient, dataTypeString);
+        dataKitAPI.insert(dataSourceClient, dataTypeString);
         Toast.makeText(this, "Information is Saved", Toast.LENGTH_SHORT).show();
     }
 

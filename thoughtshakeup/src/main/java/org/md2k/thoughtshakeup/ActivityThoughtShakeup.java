@@ -9,9 +9,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
-import org.md2k.datakitapi.messagehandler.OnConnectionListener;
+import org.md2k.datakitapi.DataKitAPI;
 import org.md2k.utilities.UI.AlertDialogs;
-import org.md2k.utilities.datakit.DataKitHandler;
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -41,16 +40,17 @@ import org.md2k.utilities.datakit.DataKitHandler;
  */
 
 public class ActivityThoughtShakeup extends Activity {
-    DataKitHandler dataKitHandler = null;
+    DataKitAPI dataKitAPI = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thought_shakeup);
-        if (!connectDataKit()) {
+        dataKitAPI=DataKitAPI.getInstance(this);
+  /*      if (!connectDataKit()) {
             AlertDialogs.showAlertDialogDataKit(this);
         }
-
+*/
         Button button;
         button = (Button) findViewById(R.id.button_shakeup);
         button.setOnClickListener(new View.OnClickListener() {
@@ -73,23 +73,23 @@ public class ActivityThoughtShakeup extends Activity {
         if(getActionBar()!=null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+/*
     private boolean connectDataKit() {
-        if (dataKitHandler == null)
-            dataKitHandler = DataKitHandler.getInstance(getApplicationContext());
-        return dataKitHandler.isConnected() || dataKitHandler.connect(new OnConnectionListener() {
+        if (dataKitAPI == null)
+            dataKitAPI = DataKitAPI.getInstance(getApplicationContext());
+        return dataKitAPI.isConnected() || dataKitAPI.connect(new OnConnectionListener() {
             @Override
             public void onConnected() {
             }
         });
     }
-
+*/
     @Override
     public void onDestroy() {
-        if (dataKitHandler.isConnected())
-            dataKitHandler.disconnect();
-        dataKitHandler.close();
-        dataKitHandler = null;
+        if (dataKitAPI.isConnected())
+            dataKitAPI.disconnect();
+        dataKitAPI.close();
+        dataKitAPI = null;
         super.onDestroy();
     }
 

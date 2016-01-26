@@ -4,11 +4,10 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
-        applicationId "org.md2k.thoughtshakeup"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
-        versionName '0.3.1'
+        versionCode 5
+        versionName '0.3.2'
     }
     buildTypes {
         release {
