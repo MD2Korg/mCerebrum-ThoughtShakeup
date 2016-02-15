@@ -1,9 +1,11 @@
 package org.md2k.thoughtshakeup;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.md2k.utilities.Report.Log;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -34,7 +36,7 @@ import java.util.ArrayList;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class Question implements Serializable {
+public class Question implements Parcelable {
     private static final String TAG = Question.class.getSimpleName();
     private int question_id;
     private String question_type;
@@ -46,6 +48,32 @@ public class Question implements Serializable {
     private long completion_time;
     private String thoughts;
     private String shortenText;
+
+    protected Question(Parcel in) {
+        question_id = in.readInt();
+        question_type = in.readString();
+        question_text = in.readString();
+        question_responses = in.createStringArrayList();
+        condition = in.createStringArrayList();
+        question_responses_selected = in.createStringArrayList();
+        prompt_time = in.readLong();
+        completion_time = in.readLong();
+        thoughts = in.readString();
+        shortenText = in.readString();
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
+
     boolean hasResponseSelected(String response){
         if(question_responses_selected==null) return false;
         for(int i=0;i<question_responses_selected.size();i++)
@@ -190,6 +218,25 @@ public class Question implements Serializable {
 
     public void setCompletion_time(long completion_time) {
         this.completion_time = completion_time;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(question_id);
+        dest.writeString(question_type);
+        dest.writeString(question_text);
+        dest.writeStringList(question_responses);
+        dest.writeStringList(condition);
+        dest.writeStringList(question_responses_selected);
+        dest.writeLong(prompt_time);
+        dest.writeLong(completion_time);
+        dest.writeString(thoughts);
+        dest.writeString(shortenText);
     }
 }
 

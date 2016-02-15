@@ -35,4 +35,8 @@ public class Constants {
     public static final String DIRECTORY = Environment.getExternalStorageDirectory() + File.separator + "mCerebrum" + File.separator + "org.md2k.thoughtshakeup";
     public static final String FILENAME = "history.csv";
     public static final String DIR_FILENAME = DIRECTORY + File.separator + FILENAME;
+    public static final String COMPLETED="COMPLETED";
+    public static final String ABANDONED_BY_TIMEOUT ="ABANDONED_BY_TIMEOUT";
+    public static final String MISSED = "MISSED";
+    public static final String ABANDONED_BY_USER="ABANDONED_BY_USER";
 }

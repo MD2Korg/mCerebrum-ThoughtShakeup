@@ -98,7 +98,7 @@ public class ActivityHistory extends Activity {
         tableRowHeader.addView(createTextView("Original Thoughts",-1));
         tableLayout.addView(tableRowHeader);
 
-        ArrayList<HistoryData.DataPoint> datapoints=HistoryData.getInstance().get(false);
+        ArrayList<DataPoint> datapoints=HistoryData.getInstance().get(false);
         for(int i=0;i<datapoints.size();i++){
             TableRow tableRow=new TableRow(this);
             tableRow.addView(createTextView(datapoints.get(i).thought,datapoints.get(i).timestamp));

@@ -1,15 +1,14 @@
 package org.md2k.thoughtshakeup;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -143,15 +142,6 @@ public class HistoryData{
             catch (IOException e) {
                 throw new RuntimeException("Error while closing input stream: "+e);
             }
-        }
-    }
-    class DataPoint implements Serializable{
-        long timestamp;
-        String thought;
-        String rephrase;
-        boolean favorites;
-        DataPoint(long timestamp, String thought, String rephrase, boolean favorites){
-            this.timestamp=timestamp;this.thought=thought;this.rephrase=rephrase;this.favorites=favorites;
         }
     }
 }

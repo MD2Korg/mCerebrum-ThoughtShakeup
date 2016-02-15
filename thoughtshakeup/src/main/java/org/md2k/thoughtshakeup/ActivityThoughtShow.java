@@ -55,7 +55,7 @@ public class ActivityThoughtShow extends Activity {
     }
 
     void setThoughts(long timestamp) {
-        ArrayList<HistoryData.DataPoint> dataPoint = HistoryData.getInstance().get(timestamp);
+        ArrayList<DataPoint> dataPoint = HistoryData.getInstance().get(timestamp);
         ((TextView) findViewById(R.id.textViewThought)).setText(dataPoint.get(0).thought);
         ((TextView) findViewById(R.id.textViewRephrase)).setText(dataPoint.get(0).rephrase);
 

@@ -1,6 +1,7 @@
 package org.md2k.thoughtshakeup;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.ArrayList;
 
 /**
@@ -29,19 +30,53 @@ import java.util.ArrayList;
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-public class QuestionsJSON implements Serializable {
+public class QuestionsJSON implements Parcelable {
     long start_time;
     long completion_time;
+    String status;
     ArrayList<QuestionJSON> questions;
 
     QuestionsJSON(Questions questions) {
         start_time = questions.startTime;
         completion_time = questions.endTime;
+        status=questions.status;
         prepareQuestion(questions.getQuestions());
     }
+
+    protected QuestionsJSON(Parcel in) {
+        start_time = in.readLong();
+        completion_time = in.readLong();
+        status=in.readString();
+        questions = in.createTypedArrayList(QuestionJSON.CREATOR);
+    }
+
+    public static final Creator<QuestionsJSON> CREATOR = new Creator<QuestionsJSON>() {
+        @Override
+        public QuestionsJSON createFromParcel(Parcel in) {
+            return new QuestionsJSON(in);
+        }
+
+        @Override
+        public QuestionsJSON[] newArray(int size) {
+            return new QuestionsJSON[size];
+        }
+    };
 
     void prepareQuestion(Question question[]) {
         questions = new ArrayList<>();
         for (Question aQuestion : question) questions.add(new QuestionJSON(aQuestion));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(start_time);
+        dest.writeLong(completion_time);
+        dest.writeString(status);
+        dest.writeTypedList(questions);
     }
 }
