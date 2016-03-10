@@ -9,8 +9,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.md2k.datakitapi.DataKitAPI;
-import org.md2k.utilities.UI.AlertDialogs;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -45,6 +48,7 @@ public class ActivityThoughtShakeup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_thought_shakeup);
         dataKitAPI=DataKitAPI.getInstance(this);
   /*      if (!connectDataKit()) {
