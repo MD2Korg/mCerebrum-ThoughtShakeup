@@ -23,8 +23,6 @@ android {
         targetSdkVersion 21
         versionCode 8
         versionName '0.4.0'
-        // Enabling multidex support.
-        multiDexEnabled true
     }
     buildTypes {
         release {
