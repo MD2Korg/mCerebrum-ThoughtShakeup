@@ -117,10 +117,24 @@ public class ActivityThoughtShakeup extends Activity {
                             case R.id.action_home:
                                 return true;
                             case R.id.action_supporting_literature:
-                                return true;
+                                Intent intentL = new Intent(ActivityThoughtShakeup.this, ActivityLiterature.class);
+                                startActivity(intentL);
+                                break;
+                            case R.id.action_exit:
+                                finish();
+                                break;
+                            case R.id.action_about:
+                                Intent intent = new Intent(ActivityThoughtShakeup.this, ActivityAbout.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.action_copyright:
+                                Intent intentC = new Intent(ActivityThoughtShakeup.this, ActivityCopyright.class);
+                                startActivity(intentC);
+                                break;
                             default:
                                 return false;
                         }
+                        return true;
                     }
                 });
 

@@ -134,10 +134,23 @@ public class ActivityHistory extends Activity {
                                 case R.id.action_home:
                                     NavUtils.navigateUpTo(ActivityHistory.this, new Intent(ActivityHistory.this, ActivityThoughtShakeup.class));
                                     break;
-                                case R.id.action_supporting_literature:
-                                    break;
                                 case R.id.action_history_clear:
                                     buildAlertMessageHistoryClear();
+                                    break;
+                                case R.id.action_supporting_literature:
+                                    Intent intentL=new Intent(ActivityHistory.this, ActivityLiterature.class);
+                                    startActivity(intentL);
+                                    break;
+                                case R.id.action_exit:
+                                    finish();
+                                    break;
+                                case R.id.action_about:
+                                    Intent intent=new Intent(ActivityHistory.this, ActivityAbout.class);
+                                    startActivity(intent);
+                                    break;
+                                case R.id.action_copyright:
+                                    Intent intentC=new Intent(ActivityHistory.this, ActivityCopyright.class);
+                                    startActivity(intentC);
                                     break;
 
                                 default:

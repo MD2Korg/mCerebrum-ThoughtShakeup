@@ -8,10 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +33,6 @@ import org.md2k.datakitapi.source.platform.PlatformType;
 import org.md2k.datakitapi.status.Status;
 import org.md2k.datakitapi.time.DateTime;
 import org.md2k.utilities.Report.Log;
-import org.md2k.utilities.UI.AlertDialogs;
 
 /**
  * Copyright (c) 2015, The University of Memphis, MD2K Center
@@ -158,9 +155,22 @@ public class ActivityExercise extends Activity {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.action_home:
-                                    NavUtils.navigateUpTo(ActivityExercise.this, new Intent(ActivityExercise.this, ActivityThoughtShakeup.class));
+                                    finish();
                                     break;
                                 case R.id.action_supporting_literature:
+                                    Intent intentL = new Intent(ActivityExercise.this, ActivityLiterature.class);
+                                    startActivity(intentL);
+                                    break;
+                                case R.id.action_exit:
+                                    finish();
+                                    break;
+                                case R.id.action_about:
+                                    Intent intent = new Intent(ActivityExercise.this, ActivityAbout.class);
+                                    startActivity(intent);
+                                    break;
+                                case R.id.action_copyright:
+                                    Intent intentC = new Intent(ActivityExercise.this, ActivityCopyright.class);
+                                    startActivity(intentC);
                                     break;
                                 default:
                                     break;
@@ -233,6 +243,7 @@ public class ActivityExercise extends Activity {
         showAlertDialog();
 
     }
+
     void showAlertDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("Quit?")
@@ -298,7 +309,7 @@ public class ActivityExercise extends Activity {
         DataSourceClient dataSourceClient = dataKitAPI.register(dataSourceBuilder);
         Gson gson = new Gson();
         String json = gson.toJson(questionsJSON);
-        Log.d(TAG,"thoughtshakeup="+json);
+        Log.d(TAG, "thoughtshakeup=" + json);
         DataTypeString dataTypeString = new DataTypeString(DateTime.getDateTime(), json);
         dataKitAPI.insert(dataSourceClient, dataTypeString);
         Toast.makeText(this, "Information is Saved", Toast.LENGTH_SHORT).show();

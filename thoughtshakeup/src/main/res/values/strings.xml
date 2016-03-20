@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="author">Inbal Nahum-Shani, University of Michigan;\nemail: inbal@umich.edu\n\nIftah Yovel, Hebrew University of Jerusalem;\nemail: iftah.yovel@mail.huji.ac.il</string>
+    <string name="app_developer">Syed Monowar Hossain, Unversity of Memphis\nemail: monowar.hossain@gmail.com\n\nTimothy Hnat, University of Memphis\ntwhnat@memphis.edu</string>
+    <string name="literature">
+    \u2022 Yovel, I., Mor, N., &amp; Shakarov, H. (2014). Examination of the core cognitive components of cognitive behavioral therapy and acceptance and commitment therapy: An analogue investigation. Behavior therapy, 45(4), 482-494.</string>
 </resources>
