@@ -67,11 +67,12 @@ public class ActivityExercise extends Activity {
 
     private PagerAdapter mPagerAdapter;
     Question[] questions = null;
-    DataKitAPI dataKitAPI;
+    public static ActivityExercise fa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fa=this;
         Questions.getInstance().setStartTime(DateTime.getDateTime());
         questions = Questions.getInstance().getQuestions();
         setContentView(R.layout.activity_thought_exercise);
@@ -90,19 +91,6 @@ public class ActivityExercise extends Activity {
                 // but for simplicity, the activity provides the actions in this sample.
                 Log.d(TAG, "viewpager: onPageSelected: position=" + position);
                 invalidateOptionsMenu();
-            }
-        });
-        dataKitAPI = DataKitAPI.getInstance(getApplicationContext());
-        dataKitAPI.connect(new OnConnectionListener() {
-            @Override
-            public void onConnected() {
-            }
-        }, new OnExceptionListener() {
-            @Override
-            public void onException(Status status) {
-                android.util.Log.d(TAG, "onException...");
-                Toast.makeText(ActivityExercise.this, "AutoSense Stopped. Error: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
-                finish();
             }
         });
         if (getActionBar() != null)
@@ -204,7 +192,8 @@ public class ActivityExercise extends Activity {
                     }
                     Questions.getInstance().setEndTime(DateTime.getDateTime());
                     Questions.getInstance().setStatus(Constants.COMPLETED);
-                    insertDataToDataKit(new QuestionsJSON(Questions.getInstance()));
+
+                    QuestionAnswer.getInstance(ActivityExercise.this).add(new QuestionsJSON(Questions.getInstance()));
                     Questions.getInstance().destroy();
                     finish();
                 } else if (questions[mPager.getCurrentItem()].isValid()) {
@@ -248,13 +237,13 @@ public class ActivityExercise extends Activity {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("Quit?")
                 .setIcon(R.drawable.ic_error_red_50dp)
-                .setMessage("Do you want to quit from this exercise? Exercise will be marked as \"Abandoned\" ")
+                .setMessage("Do you want to quit from this exercise?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Questions.getInstance().setEndTime(DateTime.getDateTime());
                         Questions.getInstance().setStatus(Constants.ABANDONED_BY_USER);
-                        insertDataToDataKit(new QuestionsJSON(Questions.getInstance()));
+                        QuestionAnswer.getInstance(ActivityExercise.this).add(new QuestionsJSON(Questions.getInstance()));
                         Questions.getInstance().destroy();
                         finish();
 
@@ -303,24 +292,11 @@ public class ActivityExercise extends Activity {
             return POSITION_NONE;
         }
     }
-
-    void insertDataToDataKit(QuestionsJSON questionsJSON) {
-        DataSourceBuilder dataSourceBuilder = createDataSourceBuilder();
-        DataSourceClient dataSourceClient = dataKitAPI.register(dataSourceBuilder);
-        Gson gson = new Gson();
-        String json = gson.toJson(questionsJSON);
-        Log.d(TAG, "thoughtshakeup=" + json);
-        DataTypeString dataTypeString = new DataTypeString(DateTime.getDateTime(), json);
-        dataKitAPI.insert(dataSourceClient, dataTypeString);
-        Toast.makeText(this, "Information is Saved", Toast.LENGTH_SHORT).show();
+    public void saveUnsavedData(){
+        Questions.getInstance().setEndTime(DateTime.getDateTime());
+        Questions.getInstance().setStatus(Constants.ABANDONED_BY_TIMEOUT);
+        QuestionAnswer.getInstance(ActivityExercise.this).add(new QuestionsJSON(Questions.getInstance()));
+        Questions.getInstance().destroy();
     }
 
-    DataSourceBuilder createDataSourceBuilder() {
-        Platform platform = new PlatformBuilder().setType(PlatformType.PHONE).setMetadata(METADATA.NAME, "Phone").build();
-        DataSourceBuilder dataSourceBuilder = new DataSourceBuilder().setType(DataSourceType.SURVEY).setPlatform(platform);
-        dataSourceBuilder = dataSourceBuilder.setMetadata(METADATA.NAME, "Survey");
-        dataSourceBuilder = dataSourceBuilder.setMetadata(METADATA.DESCRIPTION, "Thought Shakeup Questions & Answers");
-        dataSourceBuilder = dataSourceBuilder.setMetadata(METADATA.DATA_TYPE, DataTypeString.class.getName());
-        return dataSourceBuilder;
-    }
 }
