@@ -17,20 +17,6 @@ import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.md2k.datakitapi.DataKitAPI;
-import org.md2k.datakitapi.datatype.DataTypeString;
-import org.md2k.datakitapi.messagehandler.OnConnectionListener;
-import org.md2k.datakitapi.messagehandler.OnExceptionListener;
-import org.md2k.datakitapi.source.METADATA;
-import org.md2k.datakitapi.source.datasource.DataSourceBuilder;
-import org.md2k.datakitapi.source.datasource.DataSourceClient;
-import org.md2k.datakitapi.source.datasource.DataSourceType;
-import org.md2k.datakitapi.source.platform.Platform;
-import org.md2k.datakitapi.source.platform.PlatformBuilder;
-import org.md2k.datakitapi.source.platform.PlatformType;
-import org.md2k.datakitapi.status.Status;
 import org.md2k.datakitapi.time.DateTime;
 import org.md2k.utilities.Report.Log;
 
@@ -236,7 +222,7 @@ public class ActivityExercise extends Activity {
     void showAlertDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("Quit?")
-                .setIcon(R.drawable.ic_error_red_50dp)
+                .setIcon(R.drawable.ic_error_grey_50dp)
                 .setMessage("Do you want to quit from this exercise?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
