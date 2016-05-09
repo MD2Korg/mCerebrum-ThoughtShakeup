@@ -2,6 +2,7 @@ package org.md2k.thoughtshakeup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.PopupMenu;
 import com.crashlytics.android.Crashlytics;
 
 import org.md2k.datakitapi.DataKitAPI;
+import org.md2k.utilities.Report.Log;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -43,18 +45,15 @@ import io.fabric.sdk.android.Fabric;
  */
 
 public class ActivityThoughtShakeup extends Activity {
-    DataKitAPI dataKitAPI = null;
+    private static final String TAG = ActivityThoughtShakeup.class.getSimpleName();
+    private MyBroadcastReceiver myReceiver;
+    IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_thought_shakeup);
-        dataKitAPI=DataKitAPI.getInstance(this);
-  /*      if (!connectDataKit()) {
-            AlertDialogs.showAlertDialogDataKit(this);
-        }
-*/
         Button button;
         button = (Button) findViewById(R.id.button_shakeup);
         button.setOnClickListener(new View.OnClickListener() {
@@ -76,27 +75,29 @@ public class ActivityThoughtShakeup extends Activity {
         });
         if(getActionBar()!=null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-/*
-    private boolean connectDataKit() {
-        if (dataKitAPI == null)
-            dataKitAPI = DataKitAPI.getInstance(getApplicationContext());
-        return dataKitAPI.isConnected() || dataKitAPI.connect(new OnConnectionListener() {
+        intentFilter= new IntentFilter("org.md2k.ema.operation");
+        myReceiver = new MyBroadcastReceiver(new Callback() {
             @Override
-            public void onConnected() {
+            public void onTimeOut() {
+                Log.d(TAG, "timeout...");
+                ActivityExercise.fa.saveUnsavedData();
+                ActivityExercise.fa.finish();
+                finish();
+            }
+
+            @Override
+            public void onMissed() {
+                Log.d(TAG,"timeout");
+                ActivityExercise.fa.saveUnsavedData();
+                ActivityExercise.fa.finish();
+                finish();
             }
         });
-    }
-*/
-    @Override
-    public void onDestroy() {
-        if (dataKitAPI.isConnected())
-            dataKitAPI.disconnect();
-        dataKitAPI.close();
-        dataKitAPI = null;
-        super.onDestroy();
-    }
+        if (intentFilter != null) {
+            registerReceiver(myReceiver, intentFilter);
+        }
 
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -117,10 +118,24 @@ public class ActivityThoughtShakeup extends Activity {
                             case R.id.action_home:
                                 return true;
                             case R.id.action_supporting_literature:
-                                return true;
+                                Intent intentL = new Intent(ActivityThoughtShakeup.this, ActivityLiterature.class);
+                                startActivity(intentL);
+                                break;
+                            case R.id.action_exit:
+                                finish();
+                                break;
+                            case R.id.action_about:
+                                Intent intent = new Intent(ActivityThoughtShakeup.this, ActivityAbout.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.action_copyright:
+                                Intent intentC = new Intent(ActivityThoughtShakeup.this, ActivityCopyright.class);
+                                startActivity(intentC);
+                                break;
                             default:
                                 return false;
                         }
+                        return true;
                     }
                 });
 
@@ -131,4 +146,14 @@ public class ActivityThoughtShakeup extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()...");
+        QuestionAnswer.getInstance(this).sendData();
+        QuestionAnswer.clear();
+        if(myReceiver != null)
+            unregisterReceiver(myReceiver);
+        super.onDestroy();
+    }
+
 }
