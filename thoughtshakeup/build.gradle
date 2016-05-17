@@ -36,7 +36,9 @@ android {
             }
         }
     }
-
+    lintOptions {
+        abortOnError false
+    }
     productFlavors {
     }
 }

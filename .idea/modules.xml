@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../mCerebrum-DataKitAPI/datakitapi/datakitapi.iml" filepath="$PROJECT_DIR$/../mCerebrum-DataKitAPI/datakitapi/datakitapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/mCerebrum-ThoughtShakeup.iml" filepath="$PROJECT_DIR$/mCerebrum-ThoughtShakeup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/thoughtshakeup/thoughtshakeup.iml" filepath="$PROJECT_DIR$/thoughtshakeup/thoughtshakeup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mCerebrum-Utilities/utilities/utilities.iml" filepath="$PROJECT_DIR$/../mCerebrum-Utilities/utilities/utilities.iml" />
     </modules>
   </component>
 </project>

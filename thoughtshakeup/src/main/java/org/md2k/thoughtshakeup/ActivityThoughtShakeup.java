@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 
 import org.md2k.datakitapi.DataKitAPI;
 import org.md2k.utilities.Report.Log;
@@ -52,7 +53,15 @@ public class ActivityThoughtShakeup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+
+        // Set up Crashlytics, disabled for debug builds
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+
+        // Initialize Fabric with the debug-disabled crashlytics.
+        Fabric.with(this, crashlyticsKit);
+
         setContentView(R.layout.activity_thought_shakeup);
         Button button;
         button = (Button) findViewById(R.id.button_shakeup);
