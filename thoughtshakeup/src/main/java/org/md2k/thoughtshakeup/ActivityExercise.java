@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -109,6 +110,11 @@ public class ActivityExercise extends Activity {
     public void onStop() {
         super.onStop();
         if (popup != null) popup.dismiss();
+    }
+    @Override
+    public void onDestroy(){
+        fa=null;
+        super.onDestroy();
     }
 
     @Override
@@ -278,10 +284,10 @@ public class ActivityExercise extends Activity {
             return POSITION_NONE;
         }
     }
-    public void saveUnsavedData(){
+    public static void saveUnsavedData(Context context){
         Questions.getInstance().setEndTime(DateTime.getDateTime());
         Questions.getInstance().setStatus(Constants.ABANDONED_BY_TIMEOUT);
-        QuestionAnswer.getInstance(ActivityExercise.this).add(new QuestionsJSON(Questions.getInstance()));
+        QuestionAnswer.getInstance(context).add(new QuestionsJSON(Questions.getInstance()));
         Questions.getInstance().destroy();
     }
 

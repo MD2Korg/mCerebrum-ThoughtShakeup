@@ -89,16 +89,19 @@ public class ActivityThoughtShakeup extends Activity {
             @Override
             public void onTimeOut() {
                 Log.d(TAG, "timeout...");
-                ActivityExercise.fa.saveUnsavedData();
-                ActivityExercise.fa.finish();
+                ActivityExercise.saveUnsavedData(ActivityThoughtShakeup.this);
+                if(ActivityExercise.fa!=null) {
+                    ActivityExercise.fa.finish();
+                }
                 finish();
             }
 
             @Override
             public void onMissed() {
                 Log.d(TAG,"timeout");
-                ActivityExercise.fa.saveUnsavedData();
-                ActivityExercise.fa.finish();
+                ActivityExercise.saveUnsavedData(ActivityThoughtShakeup.this);
+                if(ActivityExercise.fa!=null)
+                    ActivityExercise.fa.finish();
                 finish();
             }
         });
