@@ -13,7 +13,6 @@ import android.widget.PopupMenu;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 
-import org.md2k.datakitapi.DataKitAPI;
 import org.md2k.utilities.Report.Log;
 
 import io.fabric.sdk.android.Fabric;
@@ -60,7 +59,7 @@ public class ActivityThoughtShakeup extends Activity {
                 .build();
 
         // Initialize Fabric with the debug-disabled crashlytics.
-        Fabric.with(this, crashlyticsKit);
+        Fabric.with(this, crashlyticsKit, new Crashlytics());
 
         setContentView(R.layout.activity_thought_shakeup);
         Button button;
