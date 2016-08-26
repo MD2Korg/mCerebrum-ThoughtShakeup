@@ -60,7 +60,7 @@ public class FragmentEditSpecial extends FragmentBase {
     RelativeLayout layoutEditTextSpecial;
     TextView textViewThoughtCorrectIncorrect;
     String EVENODD[] = {"My thought is correct because...", "On the other hand, my thought may be inaccurate because...",
-            "Additionally, my thought is accurate beacause...","Still, my thought may be inaccurate because..."};
+            "Additionally, my thought is accurate because...","Still, my thought may be inaccurate because..."};
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
