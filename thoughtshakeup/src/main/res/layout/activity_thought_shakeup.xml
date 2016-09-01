@@ -39,4 +39,15 @@
         android:id="@+id/button_history"
         android:gravity="center_vertical" />
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:id="@+id/button_exit"
+        android:gravity="center_vertical" />
+
 </LinearLayout>
