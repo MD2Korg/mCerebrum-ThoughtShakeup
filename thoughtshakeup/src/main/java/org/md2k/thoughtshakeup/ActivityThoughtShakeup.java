@@ -13,7 +13,9 @@ import android.widget.PopupMenu;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 
+import org.md2k.datakitapi.messagehandler.ResultCallback;
 import org.md2k.utilities.Report.Log;
+import org.md2k.utilities.permission.PermissionInfo;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -48,6 +50,7 @@ public class ActivityThoughtShakeup extends Activity {
     private static final String TAG = ActivityThoughtShakeup.class.getSimpleName();
     private MyBroadcastReceiver myReceiver;
     IntentFilter intentFilter;
+    boolean isPermission = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +65,21 @@ public class ActivityThoughtShakeup extends Activity {
         Fabric.with(this, crashlyticsKit, new Crashlytics());
 
         setContentView(R.layout.activity_thought_shakeup);
-        Button button;
-        button = (Button) findViewById(R.id.button_shakeup);
+        PermissionInfo permissionInfo = new PermissionInfo();
+        permissionInfo.getPermissions(this, new ResultCallback<Boolean>() {
+            @Override
+            public void onResult(Boolean result) {
+                isPermission = result;
+                if (result)
+                    load();
+                else finish();
+            }
+        });
+    }
+
+    void load() {
+
+        Button button = (Button) findViewById(R.id.button_shakeup);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,15 +105,15 @@ public class ActivityThoughtShakeup extends Activity {
             }
         });
 
-        if(getActionBar()!=null)
+        if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
-        intentFilter= new IntentFilter("org.md2k.ema.operation");
+        intentFilter = new IntentFilter("org.md2k.ema.operation");
         myReceiver = new MyBroadcastReceiver(new Callback() {
             @Override
             public void onTimeOut() {
                 Log.d(TAG, "timeout...");
                 ActivityExercise.saveUnsavedData(ActivityThoughtShakeup.this);
-                if(ActivityExercise.fa!=null) {
+                if (ActivityExercise.fa != null) {
                     ActivityExercise.fa.finish();
                 }
                 finish();
@@ -105,9 +121,9 @@ public class ActivityThoughtShakeup extends Activity {
 
             @Override
             public void onMissed() {
-                Log.d(TAG,"timeout");
+                Log.d(TAG, "timeout");
                 ActivityExercise.saveUnsavedData(ActivityThoughtShakeup.this);
-                if(ActivityExercise.fa!=null)
+                if (ActivityExercise.fa != null)
                     ActivityExercise.fa.finish();
                 finish();
             }
@@ -117,6 +133,7 @@ public class ActivityThoughtShakeup extends Activity {
         }
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -165,13 +182,16 @@ public class ActivityThoughtShakeup extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onDestroy() {
         Log.d(TAG, "onDestroy()...");
-        QuestionAnswer.getInstance(this).sendData();
-        QuestionAnswer.clear();
-        if(myReceiver != null)
-            unregisterReceiver(myReceiver);
+        if (isPermission) {
+            QuestionAnswer.getInstance(this).sendData();
+            QuestionAnswer.clear();
+            if (myReceiver != null)
+                unregisterReceiver(myReceiver);
+        }
         super.onDestroy();
     }
 

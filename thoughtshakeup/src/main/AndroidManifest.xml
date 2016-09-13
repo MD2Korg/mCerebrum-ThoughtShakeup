@@ -48,6 +48,12 @@
             android:uiOptions="splitActionBarWhenNarrow">
             />
         </activity>
+        <activity
+            android:name="org.md2k.utilities.permission.ActivityPermission"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Permission"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
