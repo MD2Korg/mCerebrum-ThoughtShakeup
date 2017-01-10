@@ -1,9 +1,7 @@
 package org.md2k.thoughtshakeup;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,13 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.md2k.utilities.Report.Log;
-
-import java.util.ArrayList;
 
 
 /**
@@ -59,8 +54,8 @@ public class FragmentEditSpecial extends FragmentBase {
     EditText editTextThought;
     RelativeLayout layoutEditTextSpecial;
     TextView textViewThoughtCorrectIncorrect;
-    String EVENODD[] = {"My thought is correct because...", "On the other hand, my thought may be inaccurate because...",
-            "Additionally, my thought is accurate because...","Still, my thought may be inaccurate because..."};
+    String EVENODD[] = {"My thought is correct because...", "Additionally, my thought is accurate because...","On the other hand, my thought may be inaccurate because..."
+            ,"Still, my thought may be inaccurate because..."};
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
@@ -91,7 +86,7 @@ public class FragmentEditSpecial extends FragmentBase {
             else setEditTextNotFocused();
 
             textViewThoughtCorrectIncorrect.setText(EVENODD[iteration % ITERATION]);
-            textViewThoughtCorrectIncorrect.setTextColor(iteration % 2 == 0 ? getResources().getColor(R.color.blue_400) : getResources().getColor(R.color.orange_600));
+            textViewThoughtCorrectIncorrect.setTextColor(iteration / 2 == 0 ? getResources().getColor(R.color.blue_400) : getResources().getColor(R.color.orange_600));
         }
     }
 
@@ -169,12 +164,12 @@ public class FragmentEditSpecial extends FragmentBase {
         textView.setId(curIteration + 1);
         RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParam.addRule(curIteration % 2 == 0 ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT);
+        layoutParam.addRule(curIteration / 2 == 0 ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT);
         if (curIteration > 0) layoutParam.addRule(RelativeLayout.BELOW, curIteration);
         textView.setLayoutParams(layoutParam);
         String response = EVENODD[curIteration%ITERATION]+"<b>"+question.getQuestion_responses_selected().get(curIteration)+"</b>";
         textView.setText(Html.fromHtml(response));
-        textView.setBackgroundResource(curIteration % 2 == 0 ? R.drawable.correct : R.drawable.incorrect);
+        textView.setBackgroundResource(curIteration / 2 == 0 ? R.drawable.correct : R.drawable.incorrect);
         layoutEditTextSpecial.addView(textView);
     }
 }

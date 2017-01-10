@@ -86,8 +86,8 @@ public class FragmentTextReview extends FragmentBase {
                 if(curQuestion.getQuestion_responses_selected().size()!=4) continue;
                 layoutTextReview.addView(createTextView(curQuestion.getShortenText(), 0));
                 layoutTextReview.addView(createTextView("&#8226; My thought is correct because <b>" + curQuestion.getQuestion_responses_selected().get(0) + "</b>", 40));
-                layoutTextReview.addView(createTextView("&#8226; On the other hand, my though may be inaccurate because <b>" + curQuestion.getQuestion_responses_selected().get(1) + "</b>", 40));
-                layoutTextReview.addView(createTextView("&#8226; Additionally, my thought is accurate because <b>" + curQuestion.getQuestion_responses_selected().get(2) + "</b>", 40));
+                layoutTextReview.addView(createTextView("&#8226; Additionally, my thought is accurate because <b>" + curQuestion.getQuestion_responses_selected().get(1) + "</b>", 40));
+                layoutTextReview.addView(createTextView("&#8226; On the other hand, my though may be inaccurate because <b>" + curQuestion.getQuestion_responses_selected().get(2) + "</b>", 40));
                 layoutTextReview.addView(createTextView("&#8226; Still, my thought may be inaccurate because <b>" + curQuestion.getQuestion_responses_selected().get(3) + "</b>", 40));
             } else if(curQuestion.getQuestion_id()==1){
                 if(curQuestion.getQuestion_responses_selected().size()==0){

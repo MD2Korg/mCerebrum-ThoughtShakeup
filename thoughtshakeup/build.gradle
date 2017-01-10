@@ -1,4 +1,4 @@
-version = '1.2.1'
+version = '1.2.2'
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -14,6 +14,8 @@ apply from: 'versioning.gradle'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven { url 'https://jitpack.io' }
+    mavenCentral()
 }
 
 def store_file = "keystore_missing"
